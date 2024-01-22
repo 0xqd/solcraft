@@ -6,8 +6,11 @@ Most of the contracts should be upgradable by default.
 ## Contracts
 
 ```ml
-utils
-├─ SafeTransferLib — "Safe ERC20/ETH transfer lib that handles missing return values"
+└───utils
+    │   SafeTransferLib.sol
+    │
+    └───cryptography
+            EIP712.sol
 ```
 
 ## Safety
