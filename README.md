@@ -1,66 +1,43 @@
-## Foundry
+# solcraft
 
-**Foundry is a blazing fast, portable and modular toolkit for Ethereum application development written in Rust.**
+**Modern**, **opinionated**, **gas optimized** foundational componentes for **EVM smart contract development**.
+Most of the contracts should be upgradable by default.
 
-Foundry consists of:
+## Contracts
 
--   **Forge**: Ethereum testing framework (like Truffle, Hardhat and DappTools).
--   **Cast**: Swiss army knife for interacting with EVM smart contracts, sending transactions and getting chain data.
--   **Anvil**: Local Ethereum node, akin to Ganache, Hardhat Network.
--   **Chisel**: Fast, utilitarian, and verbose solidity REPL.
-
-## Documentation
-
-https://book.getfoundry.sh/
-
-## Usage
-
-### Build
-
-```shell
-$ forge build
+```ml
+utils
+├─ SafeTransferLib — "Safe ERC20/ETH transfer lib that handles missing return values"
 ```
 
-### Test
+## Safety
 
-```shell
-$ forge test
-```
+This is **experimental software** and is provided on an "as is" and "as available" basis.
 
-### Format
+- There are implicit invariants these contracts expect to hold.
+- **You can easily shoot yourself in the foot if you're not careful.**
+- You should thoroughly read each contract you plan to use top to bottom.
 
-```shell
-$ forge fmt
-```
+We **do not give any warranties** and **will not be liable for any loss** incurred through any use of this codebase.
 
-### Gas Snapshots
+## Installation
 
-```shell
-$ forge snapshot
-```
+- TODO
 
-### Anvil
+## Notice
 
-```shell
-$ anvil
-```
+With the advancement of the EVM, some of these contracts will become obsolete. And we will update and deprecated them accordingly.
 
-### Deploy
 
-```shell
-$ forge script script/Counter.s.sol:CounterScript --rpc-url <your_rpc_url> --private-key <your_private_key>
-```
+## Acknowledgements
 
-### Cast
+These contracts were inspired by or directly modified from many sources, primarily:
 
-```shell
-$ cast <subcommand>
-```
-
-### Help
-
-```shell
-$ forge --help
-$ anvil --help
-$ cast --help
-```
+- [Gnosis](https://github.com/gnosis/gp-v2-contracts)
+- [Uniswap](https://github.com/Uniswap/uniswap-lib)
+- [Dappsys](https://github.com/dapphub/dappsys)
+- [Dappsys V2](https://github.com/dapp-org/dappsys-v2)
+- [0xSequence](https://github.com/0xSequence)
+- [OpenZeppelin](https://github.com/OpenZeppelin/openzeppelin-contracts)
+- [solmate](https://github.com/transmissions11/solmate/)
+- [solady](https://github.com/Vectorized/solady)
