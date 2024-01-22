@@ -7,6 +7,7 @@ Most of the contracts should be upgradable by default.
 
 ```ml
 utils
+    │   FixedPointMathLib.sol
     │   SafeTransferLib.sol
     │
     ├───cryptography
