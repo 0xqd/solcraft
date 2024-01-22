@@ -6,11 +6,14 @@ Most of the contracts should be upgradable by default.
 ## Contracts
 
 ```ml
-└───utils
+utils
     │   SafeTransferLib.sol
     │
-    └───cryptography
-            EIP712.sol
+    ├───cryptography
+    │       EIP712.sol
+    │
+    └───proxy
+            UUPSUpgradeable.sol
 ```
 
 ## Safety
