@@ -29,9 +29,9 @@ We **do not give any warranties** and **will not be liable for any loss** incurr
 With the advancement of the EVM, some of these contracts will become obsolete. And we will update and deprecated them accordingly.
 
 
-## Acknowledgements
+## Credits
 
-These contracts were inspired by or directly modified from many sources, primarily:
+None of these crates would have been possible without the great work done in:
 
 - [Gnosis](https://github.com/gnosis/gp-v2-contracts)
 - [Uniswap](https://github.com/Uniswap/uniswap-lib)
@@ -41,3 +41,18 @@ These contracts were inspired by or directly modified from many sources, primari
 - [OpenZeppelin](https://github.com/OpenZeppelin/openzeppelin-contracts)
 - [solmate](https://github.com/transmissions11/solmate/)
 - [solady](https://github.com/Vectorized/solady)
+
+#### License
+
+<sup>
+Licensed under either of <a href="LICENSE-APACHE">Apache License, Version
+2.0</a> or <a href="LICENSE-MIT">MIT license</a> at your option.
+</sup>
+
+<br>
+
+<sub>
+Unless you explicitly state otherwise, any contribution intentionally submitted
+for inclusion in these crates by you, as defined in the Apache-2.0 license,
+shall be dual licensed as above, without any additional terms or conditions.
+</sub>
