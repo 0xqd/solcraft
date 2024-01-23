@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.23;
 
 /// @notice Contract for EIP-712 typed structured data hashing and signing.
 /// @author Modified from Solady (https://github.com/vectorized/solady/blob/main/src/utils/EIP712.sol)
