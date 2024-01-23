@@ -77,6 +77,16 @@ abstract contract EIP712 {
         }
     }
 
+    // returns EIP712 domain separator
+    function _domainSeparator() internal view virtual returns (bytes32 separator) {
+        if (_domainNameAndVersionMayChange()) {
+            separator = _buildDomainSeparator();
+        } else {
+            separator = _cacheDomainSeparator;
+            if (_cacheDomainSeparatorInvalidated()) separator = _buildDomainSeparator();
+        }
+    }
+
     /// EIP5267
     /// @dev See: https://eips.ethereum.org/EIPS/eip-5267
     function eip712Domain()
