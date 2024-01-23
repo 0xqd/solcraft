@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.4;
+pragma solidity ^0.8.23;
 
 /// @dev This is modified from Solady TestPlus https://github.com/Vectorized/solady/blob/main/test/utils/TestPlus.sol
 
