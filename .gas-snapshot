@@ -1,0 +1,5 @@
+EIP712Test:testDomainSeparator() (gas: 5894)
+EIP712Test:testEIP5267() (gas: 10996)
+EIP712Test:testHashTypedData() (gas: 36950)
+EIP712Test:test__codesize() (gas: 9827)
+TestPlus:test__codesize() (gas: 406)
