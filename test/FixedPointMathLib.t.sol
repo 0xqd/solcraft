@@ -2,7 +2,7 @@
 pragma solidity ^0.8.23;
 
 import {Test, console2} from "forge-std/Test.sol";
-import "../src/utils/TestPlus.sol";
+import "./utils/TestPlus.sol";
 
 import {FixedPointMathLib} from "../src/utils/FixedPointMathLib.sol";
 

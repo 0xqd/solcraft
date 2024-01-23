@@ -3,7 +3,7 @@ pragma solidity ^0.8.20;
 import {Test, console} from "forge-std/Test.sol";
 import "./utils/mocks/MockEIP712.sol";
 
-import "../src/utils/TestPlus.sol";
+import "./utils/TestPlus.sol";
 import "../src/utils/proxy/LibClone.sol";
 
 contract EIP712Test is Test, TestPlus {
