@@ -18,7 +18,7 @@ abstract contract Initializable {
     bytes32 private constant _INTIALIZED_EVENT_SIGNATURE =
         0xc7f505b2f371ae2175ee4913f4499e1f2633a7b5936321eed1cdaeb6115181d2;
 
-    /// storaage
+    /// storage
     /// @dev The default initializable slot is given by:
     /// `bytes32(~uint256(uint32(bytes4(keccak256("_INITIALIZABLE_SLOT")))))`.
     ///
@@ -27,10 +27,6 @@ abstract contract Initializable {
     /// - [1..64] `initializedVersion`
     bytes32 private constant _INITIALIZABLE_SLOT =
         0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffbf601132;
-
-    /*´:°•.°+.*•´.*:˚.°*.˚•´.°:°•.°•.*•´.*:˚.°*.˚•´.°:°•.°+.*•´.*:*/
-    /*                         OPERATIONS                         */
-    /*.•°:°.´+˚.*°.˚:*.´•*.+°.•°:´*.´•*.•°.•°:°.´:•˚°.*°.˚:*.´+°.•*/
 
     /// @dev Override to return a custom storage slot if required.
     function _initializableSlot() internal pure virtual returns (bytes32) {

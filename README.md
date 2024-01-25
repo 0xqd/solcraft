@@ -9,6 +9,7 @@ Most of the contracts should be upgradable by default.
 └───utils
     │   ECDSA.sol
     │   FixedPointMathLib.sol
+    │   Initializable.sol
     │   SafeCastLib.sol
     │   SafeTransferLib.sol
     │
