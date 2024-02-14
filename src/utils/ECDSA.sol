@@ -15,7 +15,6 @@ pragma solidity ^0.8.23;
 ///   EIP-712 also enables readable signing of typed data for better user safety.
 /// This implementation does NOT check if a signature is non-malleable.
 library ECDSA {
-
     /// @dev The signature is invalid.
     error InvalidSignature();
 

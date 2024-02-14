@@ -3,11 +3,11 @@ pragma solidity ^0.8.23;
 
 /// @notice ETH and ERC20 transfer lib that handles missing return values gracefully.
 /// @author Solady (https://github.com/vectorized/solady/blob/main/src/utils/SafeTransferLib.sol)
-library SafeTransferLib { 
-	error ApproveFailed();
-	error ETHTransferFailed();
-	error TransferFailed();
-	error TransferFromFailed();
+library SafeTransferLib {
+    error ApproveFailed();
+    error ETHTransferFailed();
+    error TransferFailed();
+    error TransferFromFailed();
 
     /// @dev Suggested gas stipend for contract receiving ETH that disallows any storage writes.
     uint256 internal constant GAS_STIPEND_NO_STORAGE_WRITES = 2300;
@@ -20,7 +20,7 @@ library SafeTransferLib {
     function safeTransferETH(address to, uint256 amount) internal {
         /// @solidity memory-safe-assembly
         assembly {
-        	if lt(selfbalance(), amount) {
+            if lt(selfbalance(), amount) {
                 mstore(0x00, 0xb12d13eb) // `ETHTransferFailed()`.
                 revert(0x1c, 0x04)
             }
@@ -34,19 +34,19 @@ library SafeTransferLib {
 
     /// @dev Sends all the ETH in the current contract to `to`.
     function safeTransferAllETH(address to) internal {
-		/// @solidity memory-safe-assembly
+        /// @solidity memory-safe-assembly
         assembly {
             // Transfer all the ETH and check if it succeeded or not.
             if iszero(call(gas(), to, selfbalance(), codesize(), 0x00, codesize(), 0x00)) {
                 mstore(0x00, 0xb12d13eb) // `ETHTransferFailed()`.
                 revert(0x1c, 0x04)
             }
-        }    
+        }
     }
 
     /// @dev
     function safeTransferFrom(address token, address from, address to, uint256 amount) internal {
-    	/// @solidity memory-safe-assembly
+        /// @solidity memory-safe-assembly
         assembly {
             let m := mload(0x40) // Cache the free memory pointer.
             mstore(0x60, amount) // Store the `amount` argument.

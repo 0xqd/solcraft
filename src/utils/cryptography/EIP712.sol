@@ -4,12 +4,12 @@ pragma solidity ^0.8.23;
 /// @notice Contract for EIP-712 typed structured data hashing and signing.
 /// @author Modified from Solady (https://github.com/vectorized/solady/blob/main/src/utils/EIP712.sol)
 ///
-/// @dev This implementation does not use salts and extensions. 
+/// @dev This implementation does not use salts and extensions.
 /// If you still need it, please fork and modify.
-abstract contract EIP712 { 
-	/// `keccak256("EIP712Domain(string name,string version,uint256 chainId,address verifyingContract)")`.
+abstract contract EIP712 {
+    /// `keccak256("EIP712Domain(string name,string version,uint256 chainId,address verifyingContract)")`.
     bytes32 internal constant _DOMAIN_TYPEHASH =
-        0x8b73c3c69bb8fe3d512ecc4cf759cc79239f7b179b0ffacaa9a75d522b39400f;	
+        0x8b73c3c69bb8fe3d512ecc4cf759cc79239f7b179b0ffacaa9a75d522b39400f;
 
     uint256 private immutable _cacheThis;
     uint256 private immutable _cacheChainId;
@@ -17,13 +17,13 @@ abstract contract EIP712 {
     bytes32 private immutable _cacheVersionHash;
     bytes32 private immutable _cacheDomainSeparator;
 
-    constructor() { 
-    	_cacheThis = uint256(uint160(address(this)));
-    	_cacheChainId = block.chainid;
+    constructor() {
+        _cacheThis = uint256(uint160(address(this)));
+        _cacheChainId = block.chainid;
 
-    	string memory name;
-    	string memory version;
-    	if (!_domainNameAndVersionMayChange()) (name, version) = _domainNameAndVersion();
+        string memory name;
+        string memory version;
+        if (!_domainNameAndVersionMayChange()) (name, version) = _domainNameAndVersion();
         bytes32 nameHash = _domainNameAndVersionMayChange() ? bytes32(0) : keccak256(bytes(name));
         bytes32 versionHash =
             _domainNameAndVersionMayChange() ? bytes32(0) : keccak256(bytes(version));
@@ -54,8 +54,8 @@ abstract contract EIP712 {
 
     function _domainNameAndVersionMayChange() internal pure virtual returns (bool result) {}
 
-    /// @dev Returns the fully encoded EIP712 message (digest) for this domain 
-    /// give `structHash` as defined in 
+    /// @dev Returns the fully encoded EIP712 message (digest) for this domain
+    /// give `structHash` as defined in
     /// https://eips.ethereum.org/EIPS/eip-712#definition-of-hashstruct.
     function _hashTypedData(bytes32 structHash) internal view virtual returns (bytes32 digest) {
         // We will use `digest` to store the domain separator to save a bit of gas.

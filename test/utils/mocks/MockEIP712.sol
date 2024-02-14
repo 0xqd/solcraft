@@ -7,10 +7,10 @@ import "../../../src/utils/cryptography/EIP712.sol";
 /// Its purpose is to test, DO NOT USE in production.
 contract MockEIP712 is EIP712 {
     function _domainNameAndVersion()
-    internal
-    pure
-    override
-    returns (string memory name, string memory version)
+        internal
+        pure
+        override
+        returns (string memory name, string memory version)
     {
         name = "Solcraft";
         version = "0.1.0";

@@ -19,7 +19,8 @@ contract EIP712Test is Test, TestPlus {
 
         bytes32 type_hash = keccak256(abi.encode("Message(string name, string message)"));
         bytes32 structHash = keccak256(abi.encode(type_hash, name, message));
-        bytes32 expectedDigest = keccak256(abi.encodePacked("\x19\x01", mockEIP712.DOMAIN_SEPARATOR(), structHash));
+        bytes32 expectedDigest =
+            keccak256(abi.encodePacked("\x19\x01", mockEIP712.DOMAIN_SEPARATOR(), structHash));
 
         assertEq(mockEIP712.hashTypedData(structHash), expectedDigest);
 
@@ -33,7 +34,9 @@ contract EIP712Test is Test, TestPlus {
     function testDomainSeparator() public {
         bytes32 expectedDomainSeparator = keccak256(
             abi.encode(
-                keccak256("EIP712Domain(string name,string version,uint256 chainId,address verifyingContract)"),
+                keccak256(
+                    "EIP712Domain(string name,string version,uint256 chainId,address verifyingContract)"
+                ),
                 keccak256(bytes("Solcraft")),
                 keccak256(bytes("0.1.0")),
                 block.chainid,
@@ -57,7 +60,7 @@ contract EIP712Test is Test, TestPlus {
     function testEIP5267() public {
         _testEIP5267Variables memory t;
         (t.fields, t.name, t.version, t.chainId, t.verifyingContract, t.salt, t.extensions) =
-        mockEIP712.eip712Domain();
+            mockEIP712.eip712Domain();
 
         assertEq(t.fields, hex"0f");
         assertEq(t.name, "Solcraft");
@@ -67,5 +70,4 @@ contract EIP712Test is Test, TestPlus {
         assertEq(t.salt, bytes32(0));
         assertEq(t.extensions, new uint256[](0));
     }
-
 }
