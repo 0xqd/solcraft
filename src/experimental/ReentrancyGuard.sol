@@ -23,7 +23,7 @@ abstract contract ReentrancyGuard {
         _;
 
         assembly {
-            tsore(_REENTRANCY_GUARD_SLOT, 1)
+            tstore(_REENTRANCY_GUARD_SLOT, 1)
         }
     }
 }
