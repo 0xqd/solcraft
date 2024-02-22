@@ -11,10 +11,10 @@ contract ERC404Mint is ERC404 {
 
     error NotLive();
 
-    constructor(string name, string symbol, string baseUri) public {
-        _name = name;
-        _symbol = symbol;
-        _baseURI = baseUri;
+    constructor(string memory name_, string memory symbol_, string memory baseUri_) public {
+        _name = name_;
+        _symbol = symbol_;
+        _baseURI = baseUri_;
 
         _initERC404(1000000, msg.sender, address(this));
     }
