@@ -11,12 +11,17 @@ contract MockERC404 is ERC404 {
 
     error NotLive();
 
-    function init(string memory name_, string memory symbol_, string memory baseUri_) public {
+    function init(
+        uint96 initSupply,
+        string memory name_,
+        string memory symbol_,
+        string memory baseUri_
+    ) public {
         _name = name_;
         _symbol = symbol_;
         _baseURI = baseUri_;
 
-        _initERC404(1000000, msg.sender, address(this));
+        _initERC404(initSupply, msg.sender, address(this));
     }
 
     function toggleLive() public {
@@ -37,7 +42,11 @@ contract MockERC404 is ERC404 {
     }
 
     function tokenURI(uint256 id) public view override returns (string memory) {
-        return ""; // TODO
+        return string(abi.encodePacked(_baseURI, id));
+    }
+
+    function setBaseURI(string memory baseUri) public {
+        _baseURI = baseUri;
     }
 
     // TODO: mass mint

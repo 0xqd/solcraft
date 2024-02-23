@@ -26,7 +26,7 @@ abstract contract ERC404 {
     struct ERC404Storage {
         uint32 nextTokenId; // indicate if this contract has minted or not
         uint32 totalNftSupply;
-        uint96 totalSupply;
+        uint96 totalSupply; // in wei
         // There are multiple ways to store and relieve the nft,
         // the most simple and efficient is just put to array, and pop it like stack. FILO
         uint32[] storedNftIds;
@@ -49,7 +49,7 @@ abstract contract ERC404 {
         uint88 aux; // Aux data for general use case
         uint8 flags; // skipNFT flat is 1
         uint32[] ownedNfts; // TODO: this would break the packed data
-        uint96 balance;
+        uint96 balance; // total balance in wei
     }
 
     /// Fixed total token suply
@@ -65,13 +65,13 @@ abstract contract ERC404 {
         if ($.nextTokenId != 0) revert AlreadyInitialized();
 
         $.nextTokenId = 1;
+
         if (initTokenSupply != 0) {
             $.totalSupply = initTokenSupply;
             AddressData storage addressData = _addressData(initSupplyOwner);
             addressData.balance = initTokenSupply;
 
             // TODO: send log
-
             _setSkipERC721(initSupplyOwner, true);
         }
     }
@@ -88,8 +88,8 @@ abstract contract ERC404 {
         return uint256(_getERC404Storage().totalSupply);
     }
 
-    function balanceOf() external view returns (uint256) {
-        return uint256(_getERC404Storage().addressData[msg.sender].balance);
+    function balanceOf(address owner) external view returns (uint256) {
+        return uint256(_getERC404Storage().addressData[owner].balance);
     }
 
     function allowance(address owner, address spender) external view returns (uint256) {
@@ -139,6 +139,10 @@ abstract contract ERC404 {
     /// erc404 properties and operations
     function unit() internal view virtual returns (uint256) {
         return 1e18;
+    }
+
+    function getSkipERC721(address owner) external view returns (bool) {
+        return _getSkipERC721(owner);
     }
 
     /// Core functions
@@ -319,11 +323,10 @@ abstract contract ERC404 {
     }
 
     function _setSkipERC721(address owner, bool state) internal virtual {
-        AddressData storage ad = _addressData(owner);
-        if ((ad.flags & _ADDRESS_DATA_SKIP_ERC721_FLAG != 0) != state) {
-            ad.flags ^= _ADDRESS_DATA_SKIP_ERC721_FLAG;
+        AddressData storage d = _addressData(owner);
+        if ((d.flags & _ADDRESS_DATA_SKIP_ERC721_FLAG != 0) != state) {
+            d.flags ^= _ADDRESS_DATA_SKIP_ERC721_FLAG;
         }
-
         // TODO: Emit event
     }
 
