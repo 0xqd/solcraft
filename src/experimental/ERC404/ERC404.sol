@@ -6,7 +6,7 @@ import "./interfaces/IERC404Mirror.sol";
 /// @title Experimental ERC404
 /// @notice ERC404 is a hybrid implementation of ERC20 and ERC721 that mints
 /// and burns NFT based on account's ERC20 token balance.
-/// @author rhacker
+/// @author 0xqd (rhacker)
 ///
 /// @dev This is a rewrite to learn from Vectorized original version https://github.com/Vectorized/dn404/blob/main/src/DN404.sol
 /// TODO: 1. Support permit2 on ETH, BSC, Arbitrum
@@ -46,7 +46,7 @@ abstract contract ERC404 {
     uint8 internal constant _ADDRESS_DATA_SKIP_ERC721_FLAG = 1 << 1;
 
     struct AddressData {
-        uint88 aux;
+        uint88 aux; // Aux data for general use case
         uint8 flags; // skipNFT flat is 1
         uint32[] ownedNfts; // TODO: this would break the packed data
         uint96 balance;
@@ -57,10 +57,10 @@ abstract contract ERC404 {
         internal
         virtual
     {
-        if (mirror == address(0)) revert EZeroAddress();
+        // if (mirror == address(0)) revert EZeroAddress();
         if (unit() == 0) revert EUnitIsZero();
 
-        IERC404Mirror(mirror).link(address(this));
+        // IERC404Mirror(mirror).link(address(this));
         ERC404Storage storage $ = _getERC404Storage();
         if ($.nextTokenId != 0) revert AlreadyInitialized();
 
@@ -109,13 +109,17 @@ abstract contract ERC404 {
         return true;
     }
 
-    function transferFrom(address from, address to, uint256 amount) external virtual returns (bool) {
+    function transferFrom(address from, address to, uint256 amount)
+        external
+        virtual
+        returns (bool)
+    {
         if (from == address(0) || to == address(0)) revert EZeroAddress();
 
         uint256 allowed = _getERC404Storage().allowance[from][msg.sender];
         if (allowed != type(uint256).max) {
             if (amount > allowed) revert InvalidAmount();
-            unchecked { 
+            unchecked {
                 _getERC404Storage().allowance[from][msg.sender] -= amount;
             }
         }
@@ -123,7 +127,6 @@ abstract contract ERC404 {
         _transferERC20WithERC721(from, to, amount);
         return true;
     }
-
 
     /// erc721 ops, it will be called through a mirror
     function ownerOf(uint256 nftId) public view virtual returns (address owner) {
@@ -166,7 +169,7 @@ abstract contract ERC404 {
 
         // transfer erc20 first
         // TODO
-        // transferFrom(from, to, amount);
+        _transferERC20(from, to, amount);
 
         // check skipNFT on both adresss
 

@@ -11,7 +11,7 @@ contract MockERC404 is ERC404 {
 
     error NotLive();
 
-    constructor(string memory name_, string memory symbol_, string memory baseUri_) public {
+    function init(string memory name_, string memory symbol_, string memory baseUri_) public {
         _name = name_;
         _symbol = symbol_;
         _baseURI = baseUri_;
