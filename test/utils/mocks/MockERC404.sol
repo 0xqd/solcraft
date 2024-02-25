@@ -52,6 +52,10 @@ contract MockERC404 is ERC404 {
     // TODO: mass mint
     function massMint(address[] calldata addrs, uint256[] calldata amounts) public onlyLive {}
 
+    function mint(address to, uint256 amount) public onlyLive {
+        _mint(to, amount);
+    }
+
     // emergency
     function withdraw() public {}
 }
