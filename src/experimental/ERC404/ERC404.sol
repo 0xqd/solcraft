@@ -32,6 +32,8 @@ abstract contract ERC404 {
         // There are multiple ways to store and relieve the nft,
         // the most simple and efficient is just put to array, and pop it like stack. FILO
         uint32[] storedNftIds;
+        // address of mirror ERC721
+        address mirrorERC721;
         // ERC20 allowance
         mapping(address => mapping(address => uint256)) allowance;
         // NFT approval
@@ -66,6 +68,7 @@ abstract contract ERC404 {
         ERC404Storage storage $ = _getERC404Storage();
         if ($.nextTokenId != 0) revert AlreadyInitialized();
 
+        $.mirrorERC721 = mirror;
         $.nextTokenId = 1;
 
         if (initTokenSupply != 0) {
@@ -153,6 +156,10 @@ abstract contract ERC404 {
 
     function getSkipERC721(address owner) external view returns (bool) {
         return _getSkipERC721(owner);
+    }
+
+    function mirrorERC721() external view returns (address) {
+        return _getERC404Storage().mirrorERC721;
     }
 
     /// Core functions

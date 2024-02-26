@@ -26,6 +26,7 @@ contract ERC404Test is Test {
         assertEq(mockErc404.symbol(), symbol);
         assertEq(mockErc404.totalSupply(), initTotalSupply);
         assertEq(mockErc404.balanceOf(address(this)), initTotalSupply);
+        assertEq(mockErc404.mirrorERC721(), address(mirror));
         assertEq(mirror.totalSupply(), 0);
 
         if (initTotalSupply > 0) {
@@ -65,10 +66,7 @@ contract ERC404Test is Test {
     }
 
     // TODO: check overflow for  _transferRC20, _transferERC721
-
-
     // TODO test interaction between 2 EOA
-    // TODO 
-    // TODO: test batch logging
+    // TODO test batch logging
     // TODO test mirror
 }
