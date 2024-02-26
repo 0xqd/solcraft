@@ -61,8 +61,8 @@ contract ERC404Test is Test {
         assertEq(mockErc404.balanceOf(anh), mintAmount);
 
         // erc721
-        uint32 tokenAmount = uint32(mintAmount / _WAD);
-        assertEq(mirror.balanceOf(anh), tokenAmount);
+        uint32 erc721Amt = uint32(mintAmount / _WAD);
+        assertEq(mirror.balanceOf(anh), erc721Amt);
     }
 
     function testTransfer() external {
@@ -106,6 +106,4 @@ contract ERC404Test is Test {
         assertEq(mirror.balanceOf(dung), (transferAmount - transferFromAmt) / _WAD);
         assertEq(mirror.balanceOf(thuy), transferFromAmt / _WAD);
     }
-
-    // TODO: test ownedNftIds
 }

@@ -227,7 +227,6 @@ abstract contract ERC404 {
                     ++i;
                 }
             }
-            return true;
         }
 
         return true;
