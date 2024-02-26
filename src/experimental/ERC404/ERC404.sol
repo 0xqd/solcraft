@@ -149,7 +149,7 @@ abstract contract ERC404 {
         return uint256(_getERC404Storage().totalNftSupply);
     }
 
-    /// erc404 properties and operations
+    /// erc404 ops
     function unit() internal view virtual returns (uint256) {
         return 1e18;
     }
@@ -160,6 +160,10 @@ abstract contract ERC404 {
 
     function mirrorERC721() external view returns (address) {
         return _getERC404Storage().mirrorERC721;
+    }
+
+    function setSkipERC721(bool state) external {
+        _setSkipERC721(msg.sender, state);
     }
 
     /// Core functions
@@ -192,22 +196,20 @@ abstract contract ERC404 {
         if (fromSkipNFT && toSkipNFT) return true;
 
         // // Case 1) `From` doesn't skip NFT, we store NFT for `from`
-        // if (!fromSkipNFT) {
-        //     AddressData storage fromData = _addressData(from);
-        //     uint32 tokenToStore;
-        //         // uint32(fromData.ownedNfts.length) -
-        //         // uint32(fromData.balance / unit());
-        //     unchecked {
-        //         tokenToStore = uint32(fromData.balance / unit()) - uint32(fromData.ownedNfts.length);
-        //     }
+        if (!fromSkipNFT) {
+            AddressData storage fromData = _addressData(from);
+            uint32 tokenToStore;
+            unchecked {
+                tokenToStore = uint32(fromData.ownedNfts.length) - uint32(fromData.balance / unit());
+            }
 
-        //     for (uint32 i = 0; i < tokenToStore;) {
-        //         _storeNFT(from);
-        //         unchecked {
-        //             ++i;
-        //         }
-        //     }
-        // }
+            for (uint32 i = 0; i < tokenToStore;) {
+                _storeNFT(from);
+                unchecked {
+                    ++i;
+                }
+            }
+        }
 
         // Case 2) `To` doesn't skip NFT, we retrieve or mint NFT for `to`
         if (!toSkipNFT) {
@@ -218,7 +220,6 @@ abstract contract ERC404 {
                 nftToRetrieveOrMint =
                     uint32(newToData.balance / unit() - newToData.ownedNfts.length);
             }
-            console2.log("nftToRetrieveOrMint", nftToRetrieveOrMint);
 
             for (uint32 i = 0; i < nftToRetrieveOrMint;) {
                 _retrieveOrMintNFT(to);
@@ -228,8 +229,6 @@ abstract contract ERC404 {
             }
             return true;
         }
-
-        // TODO: testing
 
         return true;
     }
@@ -256,6 +255,7 @@ abstract contract ERC404 {
         if (from == address(0)) revert EZeroAddress();
 
         ERC404Storage storage $ = _getERC404Storage();
+        // @dev This can be customized based on implementor usecase.
         uint32 id = _addressData(from).ownedNfts[_addressData(from).ownedNfts.length - 1];
 
         _transferERC721(from, address(0), id);
@@ -272,14 +272,20 @@ abstract contract ERC404 {
             $.totalSupply += uint96(amount);
         } else {
             unchecked {
+                if ($.addressData[from].balance < amount) {
+                    revert InvalidAmount();
+                }
+
                 $.addressData[from].balance -= uint96(amount);
             }
         }
 
         // TODO: faster overflow check
-        if ($.addressData[to].balance > $.addressData[to].balance + uint96(amount)) {
+        uint256 newTotalSupply = $.totalSupply + amount;
+        if (_totalSupplyOverflow(newTotalSupply)) {
             revert Overflow();
         }
+
         unchecked {
             $.addressData[to].balance += uint96(amount);
         }
@@ -300,6 +306,8 @@ abstract contract ERC404 {
         // Make sure this nft isn't the same with NFT based on erc20 token. Wrong, normally they just use transferFromNFT
         if (from != address(0)) {
             delete $.nftApprovals[id];
+            AddressData storage fromData = _addressData(from);
+            fromData.ownedNfts.pop();
         }
 
         // Not a burn
