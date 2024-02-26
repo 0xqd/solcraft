@@ -62,7 +62,7 @@ abstract contract ERC404 {
         if (mirror == address(0)) revert EZeroAddress();
         if (unit() == 0) revert EUnitIsZero();
 
-        // IERC404Mirror(mirror).link(address(this));
+        IERC404Mirror(mirror).link(address(this));
         ERC404Storage storage $ = _getERC404Storage();
         if ($.nextTokenId != 0) revert AlreadyInitialized();
 

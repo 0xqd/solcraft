@@ -7,7 +7,7 @@ import "../../src/experimental/ERC404/ERC404Mirror.sol";
 
 contract ERC404Test is Test {
     MockERC404 mockErc404;
-    ERC404Mirror mockErc404Mirror;
+    ERC404Mirror mirror;
 
     uint96 private constant _WAD = 1e18;
 
@@ -17,17 +17,16 @@ contract ERC404Test is Test {
 
     function setUp() public {
         mockErc404 = new MockERC404();
-        mockErc404Mirror = new ERC404Mirror(msg.sender);
-        mockErc404Mirror.link(address(mockErc404));
+        mirror = new ERC404Mirror(msg.sender);
     }
 
     function testInit(uint96 initTotalSupply, string memory name, string memory symbol) public {
-        mockErc404.init(initTotalSupply, name, symbol, "https://test.com/");
+        mockErc404.init(initTotalSupply, name, symbol, "https://test.com/", address(mirror));
         assertEq(mockErc404.name(), name);
         assertEq(mockErc404.symbol(), symbol);
         assertEq(mockErc404.totalSupply(), initTotalSupply);
         assertEq(mockErc404.balanceOf(address(this)), initTotalSupply);
-        assertEq(mockErc404Mirror.totalSupply(), 0);
+        assertEq(mirror.totalSupply(), 0);
 
         if (initTotalSupply > 0) {
             assertEq(mockErc404.getSkipERC721(address(this)), true);
@@ -35,12 +34,12 @@ contract ERC404Test is Test {
     }
 
     function testTokenURI(string memory baseUri, uint256 id) public {
-        mockErc404.init(888888 * _WAD, "TEST", "TST", baseUri);
+        mockErc404.init(888888 * _WAD, "TEST", "TST", baseUri, address(mirror));
         assertEq(mockErc404.tokenURI(id), string(abi.encodePacked(baseUri, id)));
     }
 
     function testMint(uint32 initTotalSupply, uint32 mintAmount) public {
-        mockErc404.init(initTotalSupply, "TEST", "TST", "https://test.com/");
+        mockErc404.init(initTotalSupply, "TEST", "TST", "https://test.com/", address(mirror));
         mockErc404.toggleLive();
 
         if (mintAmount == 0) {
@@ -62,16 +61,14 @@ contract ERC404Test is Test {
 
         // erc721
         uint32 tokenAmount = uint32(mintAmount / _WAD);
-        assertEq(mockErc404Mirror.balanceOf(anh), tokenAmount);
+        assertEq(mirror.balanceOf(anh), tokenAmount);
     }
 
-    // TODO: check overflow for init, mint, _transferRC20, _transferERC721
+    // TODO: check overflow for  _transferRC20, _transferERC721
 
-    // edgecases
-    // function testMint()
 
-    // TODO test interaction
-    // function testGetAndSetApprovedForAll(address owner, address operator, bool approved) public {}
-
-    // test mirror
+    // TODO test interaction between 2 EOA
+    // TODO 
+    // TODO: test batch logging
+    // TODO test mirror
 }

@@ -15,13 +15,14 @@ contract MockERC404 is ERC404 {
         uint96 initSupply,
         string memory name_,
         string memory symbol_,
-        string memory baseUri_
+        string memory baseUri_,
+        address mirror
     ) public {
         _name = name_;
         _symbol = symbol_;
         _baseURI = baseUri_;
 
-        _initERC404(initSupply, msg.sender, address(this));
+        _initERC404(initSupply, msg.sender, mirror);
     }
 
     function toggleLive() public {
