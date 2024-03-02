@@ -11,14 +11,22 @@ abstract contract Ownable {
     // compatible with OZ events
     event OwnershipTransferred(address indexed oldOwner, address indexed newOwner);
 
-
     /// @dev `keccak256(bytes("OwnershipTransferred(address,address)"))`.
-    uint256 private constant _OWNERSHIP_TRANSFERRED_EVENT_SIGNATURE =
+    uint256 private constant _OWNERSHIP_TRANSFERRED_EVENT_SIG =
         0x8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0;
 
     // storage
 
-    function _initOwner(address owner) internal virtual {
+    /// @dev The owner slot is given by:
+    /// `bytes32(~uint256(uint32(bytes4(keccak256("_OWNER_SLOT_NOT")))))`.
+    /// It is intentionally chosen to be a high value
+    /// to avoid collision with lower slots.
+    /// The choice of manual storage layout is to enable compatibility
+    /// with both regular and upgradeable contracts.
+    bytes32 internal constant _OWNER_SLOT =
+        0xffffffffffffffffffffffffffffffffffffffffffffffffffffffff74873927;
+
+    function _initOwner(address newOwner) internal virtual {
         if (_guardInitOwner()) {
             assembly {
                 let ownerSlot := _OWNER_SLOT
@@ -27,15 +35,15 @@ abstract contract Ownable {
                     revert(0x1c, 0x04)
                 }
 
-                owner := shr(96, shl(96, owner)) // clean upper 96 bits
-                sstore(ownerSlot, or(owner, shl(255, iszero(owner))))
-                log3(0, 0, _OWNERSHIP_TRANSFERRED_EVENT_SIG, 0, owner)
+                newOwner := shr(96, shl(96, newOwner)) // clean upper 96 bits
+                sstore(ownerSlot, or(newOwner, shl(255, iszero(newOwner))))
+                log3(0, 0, _OWNERSHIP_TRANSFERRED_EVENT_SIG, 0, newOwner)
             }
         } else {
             assembly {
-                owner := shr(96, shl(96, owner)) // clean upper 96 bits
-                sstore(_OWNER_SLOT, owner)
-                log2(0, 0, _OWNERSHIP_TRANSFERRED_EVENT_SIGNATURE, 0, owner)
+                newOwner := shr(96, shl(96, newOwner)) // clean upper 96 bits
+                sstore(_OWNER_SLOT, newOwner)
+                log3(0, 0, _OWNERSHIP_TRANSFERRED_EVENT_SIG, 0, newOwner)
             }
         }
     }
@@ -47,14 +55,16 @@ abstract contract Ownable {
     function _checkOwner() internal view virtual {
         assembly {
             if iszero(eq(caller(), sload(_OWNER_SLOT))) {
-                mstore(0x00, 0x82b4900) // `Unauthorized()`, push32,) push, mstore
+                mstore(0x00, 0x82b42900) // `Unauthorized()`, push32,) push, mstore
                 revert(0x1c, 0x04)
             }
         }
     }
 
     // public functions
+    /// @dev transfers ownership to newOwner
     function transferOwnership(address newOwner) public payable virtual onlyOwner {
+        // revert if newOwner is zero address
         assembly {
             if iszero(shl(96, newOwner)) {
                 mstore(0x00, 0x7448fbae) // `NewOwnerIsZeroAddress()`.
