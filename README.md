@@ -6,34 +6,32 @@ Most of the contracts should be upgradable by default.
 ## Contracts
 
 ```ml
-├───experimental
-│   │   ReentrancyGuard.sol
-│   │
-│   └───ERC404
-│       │   ERC404.sol
-│       │   ERC404Mirror.sol
-│       │   README.md
-│       │
-│       ├───examples
-│       │       ERC404Mint.sol
-│       │
-│       └───interfaces
-│               IERC404.sol
-│               IERC404Mirror.sol
-│
-└───utils
-    │   ECDSA.sol
-    │   FixedPointMathLib.sol
-    │   Initializable.sol
-    │   SafeCastLib.sol
-    │   SafeTransferLib.sol
-    │
-    ├───cryptography
-    │       EIP712.sol
-    │
-    └───proxy
-            LibClone.sol
-            UUPSUpgradeable.sol
+├── experimental
+│   ├── ERC404
+│   │   ├── ERC404Mirror.sol
+│   │   ├── ERC404.sol
+│   │   ├── examples
+│   │   │   └── ERC404Mint.sol
+│   │   ├── interfaces
+│   │   │   ├── IERC404Mirror.sol
+│   │   │   └── IERC404.sol
+│   │   └── README.md
+│   └── ReentrancyGuard.sol
+├── tokens
+│   └── ERC6909.sol
+└── utils
+    ├── auth
+    │   └── Ownable.sol
+    ├── cryptography
+    │   └── EIP712.sol
+    ├── ECDSA.sol
+    ├── FixedPointMathLib.sol
+    ├── Initializable.sol
+    ├── proxy
+    │   ├── LibClone.sol
+    │   └── UUPSUpgradeable.sol
+    ├── SafeCastLib.sol
+    └── SafeTransferLib.sol
 ```
 
 ## Safety
