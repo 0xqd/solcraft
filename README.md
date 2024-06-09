@@ -17,8 +17,6 @@ Most of the contracts should be upgradable by default.
 │   │   │   └── IERC404.sol
 │   │   └── README.md
 │   └── ReentrancyGuard.sol
-├── tokens
-│   └── ERC6909.sol
 └── utils
     ├── auth
     │   └── Ownable.sol
